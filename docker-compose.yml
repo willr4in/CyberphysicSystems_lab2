@@ -1,0 +1,20 @@
+services:
+  llm-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: sms-spam-llm
+    ports:
+      - "8000:8000"
+      - "11434:11434"
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+    restart: unless-stopped
